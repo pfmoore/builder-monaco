@@ -15,10 +15,10 @@ build_script:
       # fatal error C1128: number of sections exceeded object file format limit
     - cl /O2 /bigobj /EHsc /Femonaco.exe *.cpp
     - cd ..
-    - copy Source/monaco.exe .
+    - copy Source\monaco.exe .
     - 7z a ..\%BUILD_RESULT% *.pdf *.ppt monaco.exe
     - cd ..
-    - ps: Get-FileHash -Algorithm SHA256 $env:BUIILD_RESULT
+    - ps: Get-FileHash -Algorithm SHA256 $env:BUILD_RESULT
 
 artifacts:
     - path: $(BUILD_RESULT)
