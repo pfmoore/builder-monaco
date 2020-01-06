@@ -2,15 +2,14 @@
 image: Visual Studio 2015
 build: off
 environment:
-  MONACO_VERSION: 1.15
+  MONACO_VERSION: 1.16
   BUILD_RESULT: monaco-$(MONACO_VERSION).zip
   MONACO_URL:
-    secure: fhxf6GDTF+9AWJKuKiosKvtL5OGoCtpL76CbGPFx05F/fBGKirEssR768voD9wPrDHiHiTljpLRCtip3bStV59PGtXnlWGbTRBpeNiskJwA=
+    secure: fhxf6GDTF+9AWJKuKiosKpm/mUZ+qfUV3IcPtoUnHoIi8RAVXVyJcMazhxtgOuVzsXAfkUyVcIZd7l8Io4RLYw==
 
 build_script:
       # - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
     - set PATH=C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;%PATH%
-    - dir C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64
     - ps: Invoke-WebRequest $env:MONACO_URL -OutFile monaco.zip
     - unzip monaco.zip
     - cd monaco/Source
