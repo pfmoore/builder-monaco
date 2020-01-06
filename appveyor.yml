@@ -4,8 +4,14 @@ build: off
 environment:
   MONACO_VERSION: 1.16
   BUILD_RESULT: monaco-$(MONACO_VERSION).zip
+  # To generate this:
+  #   1. Right click the file in the Dropbox folder on your PC.
+  #   2. Select "Copy Dropbox Link"
+  #   3. In Appveyor, go to Account -> Encrypt YAML
+  #   4. Paste the link, and change "dl=0" to "dl=1"
+  #   5. Click "Encrypt" and put the generated value below.
   MONACO_URL:
-    secure: fhxf6GDTF+9AWJKuKiosKpm/mUZ+qfUV3IcPtoUnHoIi8RAVXVyJcMazhxtgOuVzsXAfkUyVcIZd7l8Io4RLYw==
+    secure: fhxf6GDTF+9AWJKuKiosKpm/mUZ+qfUV3IcPtoUnHoIi8RAVXVyJcMazhxtgOuVzhAdv9Zijnt2c+GpWvom4EQ==
 
 build_script:
       # - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
