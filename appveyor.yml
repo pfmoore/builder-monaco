@@ -2,7 +2,7 @@
 image: Visual Studio 2015
 build: off
 environment:
-  MONACO_VERSION: 1.23
+  MONACO_VERSION: 1.25
   BUILD_RESULT: monaco-$(MONACO_VERSION).zip
   # To generate this:
   #   1. Right click the file in the Dropbox folder on your PC.
@@ -11,7 +11,7 @@ environment:
   #   4. Paste the link, and change "dl=0" to "dl=1"
   #   5. Click "Encrypt" and put the generated value below.
   MONACO_URL:
-    secure: fhxf6GDTF+9AWJKuKiosKis65PEaqjZu+nK2qm2JQIDgJgRYzVJHJSZwHL3mQe5/r1ywayzmJz3B3tlnMxhmvQ==
+    secure: fhxf6GDTF+9AWJKuKiosKs3ZGeffICKprn4oOA4+La21+GVfdoPb8X+1nPEF0CTDiYzc3/Nn6HJw6Cg1yJuKXA==
 
 build_script:
       # - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
