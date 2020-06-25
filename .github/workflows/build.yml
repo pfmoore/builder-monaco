@@ -1,0 +1,38 @@
+name: Build
+on:
+  repository_dispatch:
+    types: [release]
+jobs:
+  build_win:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: pfmoore/monaco
+        ref: ${{ github.event.client_payload.tag }}
+        token: ${{ secrets.PAT }}
+    - name: Build Monaco
+      run: |
+        mkdir bin
+        g++ -o bin/monaco.exe -O3 monaco/Source/*.cpp -s -static
+    - name: Sanity check
+      run: |
+        objdump -p bin/monaco.exe | grep DLL
+        bin/monaco.exe -statistics -histogram 3d6 1000000
+  build_ubuntu:
+    name: Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        repository: pfmoore/monaco
+        ref: ${{ github.event.client_payload.tag }}
+        token: ${{ secrets.PAT }}
+    - name: Build Monaco
+      run: |
+        mkdir bin
+        g++ -o bin/monaco -O3 monaco/Source/*.cpp -s
+    - name: Sanity check
+      run: |
+        bin/monaco -statistics -histogram 3d6 1000000
