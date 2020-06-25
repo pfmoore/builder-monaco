@@ -2,9 +2,10 @@ name: Build
 on:
   repository_dispatch:
     types: [release]
+
 jobs:
-  build_win:
-    name: Windows
+  build-windows:
+    name: Windows Build
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -14,14 +15,24 @@ jobs:
         token: ${{ secrets.PAT }}
     - name: Build Monaco
       run: |
+        unzip -q monaco.zip
         mkdir bin
         g++ -o bin/monaco.exe -O3 monaco/Source/*.cpp -s -static
     - name: Sanity check
       run: |
-        objdump -p bin/monaco.exe | grep DLL
         bin/monaco.exe -statistics -histogram 3d6 1000000
-  build_ubuntu:
-    name: Ubuntu
+    - name: Package build
+      run: |
+        mkdir dist
+        choco install zip
+        zip -9 -j dist/monaco-windows.zip bin/* monaco/*.txt monaco/*.pdf monaco/*.ppt
+    - uses: actions/upload-artifact@v2
+      with:
+        name: monaco-windows.zip
+        path: dist/monaco-windows.zip
+
+  build-linux:
+    name: Linux Build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -31,8 +42,63 @@ jobs:
         token: ${{ secrets.PAT }}
     - name: Build Monaco
       run: |
+        unzip -q monaco.zip
         mkdir bin
         g++ -o bin/monaco -O3 monaco/Source/*.cpp -s
     - name: Sanity check
       run: |
         bin/monaco -statistics -histogram 3d6 1000000
+    - name: Package build
+      run: |
+        mkdir dist
+        zip -9 -j dist/monaco-linux.zip bin/* monaco/*.txt monaco/*.pdf monaco/*.ppt
+    - uses: actions/upload-artifact@v2
+      with:
+        name: monaco-linux.zip
+        path: dist/monaco-linux.zip
+
+  release-upload:
+    name: Publish Release
+    needs:
+      - build-linux
+      - build-windows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.client_payload.tag }}
+          release_name: Release ${{ github.event.client_payload.tag }}
+          draft: false
+          prerelease: false
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: monaco-linux.zip
+      - name: Display structure of downloaded files
+        run: ls -R
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./monaco-linux.zip
+          asset_name: monaco-linux-${{ github.event.client_payload.tag }}.zip
+          asset_content_type: application/zip
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: monaco-windows.zip
+      - name: Display structure of downloaded files
+        run: ls -R
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./monaco-windows.zip
+          asset_name: monaco-windows-${{ github.event.client_payload.tag }}.zip
+          asset_content_type: application/zip
