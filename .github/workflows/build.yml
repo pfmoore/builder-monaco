@@ -24,8 +24,7 @@ jobs:
     - name: Package build
       run: |
         mkdir dist
-        choco install zip
-        zip -9 -j dist/monaco-windows.zip bin/* monaco/*.txt monaco/*.pdf monaco/*.ppt
+        Compress-Archive .\monaco\*.ppt,monaco\*.pdf,monaco\*.txt dist/monaco-windows.zip
     - uses: actions/upload-artifact@v2
       with:
         name: monaco-windows.zip
