@@ -24,7 +24,7 @@ jobs:
     - name: Package build
       run: |
         mkdir dist
-        Compress-Archive .\monaco\*.ppt,monaco\*.pdf,monaco\*.txt dist/monaco-windows.zip
+        Compress-Archive .\bin\*.exe,.\monaco\*.ppt,monaco\*.pdf,monaco\*.txt dist/monaco-windows.zip
     - uses: actions/upload-artifact@v2
       with:
         name: monaco-windows.zip
