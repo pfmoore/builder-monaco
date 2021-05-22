@@ -15,7 +15,6 @@ jobs:
         token: ${{ secrets.PAT }}
     - name: Build Monaco
       run: |
-        unzip -q monaco.zip
         mkdir bin
         g++ -o bin/monaco.exe -O3 monaco/Source/*.cpp -s -static
     - name: Sanity check
@@ -42,7 +41,6 @@ jobs:
         token: ${{ secrets.PAT }}
     - name: Build Monaco
       run: |
-        unzip -q monaco.zip
         mkdir bin
         g++ -o bin/monaco -O3 monaco/Source/*.cpp -s
     - name: Sanity check
