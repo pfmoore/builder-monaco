@@ -23,8 +23,7 @@ jobs:
     - name: Package build
       run: |
         mkdir dist
-        choco install zip
-        zip -9 -j dist/monaco-windows.zip bin/* monaco/*.txt monaco/*.pdf monaco/*.ppt
+        Compress-Archive .\bin\*.exe,.\monaco\*.ppt,monaco\*.pdf,monaco\*.txt dist/monaco-windows.zip
     - uses: actions/upload-artifact@v2
       with:
         name: monaco-windows.zip
@@ -84,7 +83,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./monaco-linux.zip
-          asset_name: monaco-linux.zip
+          asset_name: monaco-linux-${{ github.event.client_payload.tag }}.zip
           asset_content_type: application/zip
 
       - uses: actions/download-artifact@v2
@@ -98,5 +97,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./monaco-windows.zip
-          asset_name: monaco-windows.zip
+          asset_name: monaco-windows-${{ github.event.client_payload.tag }}.zip
           asset_content_type: application/zip
