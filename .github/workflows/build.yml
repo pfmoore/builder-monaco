@@ -16,6 +16,7 @@ jobs:
     - name: Build Monaco
       run: |
         mkdir bin
+        g++ --version
         g++ -o bin/monaco.exe -O3 monaco/Source/*.cpp -s -static
     - name: Sanity check
       run: |
@@ -41,6 +42,7 @@ jobs:
     - name: Build Monaco
       run: |
         mkdir bin
+        g++ --version
         g++ -o bin/monaco -O3 monaco/Source/*.cpp -s
     - name: Sanity check
       run: |
