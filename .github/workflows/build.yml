@@ -43,7 +43,7 @@ jobs:
       run: |
         mkdir bin
         g++ --version
-        g++ -o bin/monaco -O3 monaco/Source/*.cpp -s
+        g++ -o bin/monaco -static -O3 monaco/Source/*.cpp -s
     - name: Sanity check
       run: |
         bin/monaco -statistics -histogram 3d6 1000000
