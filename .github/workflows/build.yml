@@ -13,11 +13,15 @@ jobs:
         repository: pfmoore/monaco
         ref: ${{ github.event.client_payload.tag }}
         token: ${{ secrets.PAT }}
+    - name: Setup gcc
+      run: |
+        curl -o gcc.7z -L https://github.com/brechtsanders/winlibs_mingw/releases/download/13.2.0-16.0.6-11.0.0-ucrt-r1/winlibs-x86_64-posix-seh-gcc-13.2.0-mingw-w64ucrt-11.0.0-r1.7z
+        7z x gcc.7z
     - name: Build Monaco
       run: |
         mkdir bin
-        g++ --version
-        g++ -o bin/monaco.exe -O3 monaco/Source/*.cpp -s -static
+        mingw64/bin/g++ --version
+        mingw64/bin/g++ -o bin/monaco.exe -O3 monaco/Source/*.cpp -s -static
     - name: Sanity check
       run: |
         bin/monaco.exe -statistics -histogram 3d6 1000000
@@ -42,8 +46,8 @@ jobs:
     - name: Build Monaco
       run: |
         mkdir bin
-        g++ --version
-        g++ -o bin/monaco -static -O3 monaco/Source/*.cpp -s
+        g++-13 --version
+        g++-13 -o bin/monaco -static -O3 monaco/Source/*.cpp -s
     - name: Sanity check
       run: |
         bin/monaco -statistics -histogram 3d6 1000000
