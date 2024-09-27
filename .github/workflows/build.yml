@@ -8,7 +8,7 @@ jobs:
     name: Windows Build
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         repository: pfmoore/monaco
         ref: ${{ github.event.client_payload.tag }}
@@ -29,7 +29,7 @@ jobs:
       run: |
         mkdir dist
         Compress-Archive .\bin\*.exe,.\monaco\*.ppt,monaco\*.pdf,monaco\*.txt dist/monaco-windows.zip
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: monaco-windows.zip
         path: dist/monaco-windows.zip
@@ -38,7 +38,7 @@ jobs:
     name: Linux Build
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         repository: pfmoore/monaco
         ref: ${{ github.event.client_payload.tag }}
@@ -55,7 +55,7 @@ jobs:
       run: |
         mkdir dist
         zip -9 -j dist/monaco-linux.zip bin/* monaco/*.txt monaco/*.pdf monaco/*.ppt
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: monaco-linux.zip
         path: dist/monaco-linux.zip
@@ -67,7 +67,7 @@ jobs:
       - build-windows
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - id: create_release
         uses: actions/create-release@v1
         env:
@@ -78,7 +78,7 @@ jobs:
           draft: false
           prerelease: false
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: monaco-linux.zip
       - name: Display structure of downloaded files
@@ -92,7 +92,7 @@ jobs:
           asset_name: monaco-linux-${{ github.event.client_payload.tag }}.zip
           asset_content_type: application/zip
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: monaco-windows.zip
       - name: Display structure of downloaded files
